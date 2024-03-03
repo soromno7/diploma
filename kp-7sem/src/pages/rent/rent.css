@@ -1,0 +1,45 @@
+.rentContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.dealerContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+}
+
+.dealerIcon {
+  width: 110px;
+  height: 110px;
+  margin-right: 20px;
+  /* display: flex; */
+}
+
+.dealerItem {
+  display: flex;
+  align-items: center;
+}
+
+.dealerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dealerContent > *:not(h4, span) {
+  margin-top: 10px;
+}
+
+.dealerIcon:hover {
+  cursor: pointer;
+}
+
+.swiper {
+  width: 100%;
+  height: 130px;
+}

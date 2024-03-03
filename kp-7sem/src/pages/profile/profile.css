@@ -1,0 +1,20 @@
+.modal-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 65px;
+  position: absolute;
+  right: 105%;
+  top: 1%;
+}
+
+.modal-aside-item {
+  padding: 10px 30px 10px 30px;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 60px;
+  margin-top: 10px;
+  text-decoration: none;
+  color: black;
+  background-color: #f3f3f3;
+}

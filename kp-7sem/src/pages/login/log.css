@@ -1,0 +1,25 @@
+.loginPageContainer {
+  width: 800px;
+  height: 450px;
+  padding: 0px 40px 0px 40px;
+  background: rgb(255, 220, 61);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  box-shadow: 8px 8px 9px 0px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+}
+
+.loginPageData {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.loginPageData > *:not(h2, span) {
+  margin-bottom: 10px;
+}
