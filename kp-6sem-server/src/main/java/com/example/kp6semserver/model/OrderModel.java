@@ -11,7 +11,6 @@ public class OrderModel {
     private String FirstName;
     private String LastName;
     private String orderDate;
-    private String startDate;
     private String endDate;
     private String price;
     private String promocode;
@@ -22,6 +21,7 @@ public class OrderModel {
     private String plateNumber;
     private String gearbox;
     private String fuel;
+    private String duration;
     private Long userID;
     private Long dealerID;
     private Long carID;
@@ -32,7 +32,6 @@ public class OrderModel {
         model.setFirstName(entity.getUser().getFirst_name());
         model.setLastName(entity.getUser().getLast_name());
         model.setOrderDate(entity.getOrderDate());
-        model.setStartDate(entity.getStart_date());
         model.setEndDate(entity.getEnd_date());
         model.setPrice(entity.getPrice());
         model.setPromocode(entity.getPromocode());
@@ -46,6 +45,7 @@ public class OrderModel {
         model.setCarID(entity.getCar().getId());
         model.setFuel(entity.getCar().getFuel());
         model.setGearbox(entity.getCar().getGearbox());
+        model.setDuration(entity.getDuration());
 
         return model;
     }
@@ -92,14 +92,6 @@ public class OrderModel {
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
     }
 
     public String getEndDate() {
@@ -204,5 +196,13 @@ public class OrderModel {
 
     public void setFuel(String fuel) {
         this.fuel = fuel;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

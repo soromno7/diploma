@@ -1,0 +1,47 @@
+.car-rent-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.car-rent-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 620px;
+  height: 150px;
+  padding: 20px 20px 20px 20px;
+  box-shadow: 0px 6px 20px -3px rgba(0, 0, 0, 0.2);
+}
+
+.car-rent-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 580px;
+}
+
+.car-rent-item-img {
+  width: 220px;
+  height: 160px;
+}
+
+.car-rent-item-content-row {
+  display: flex;
+  justify-content: space-between;
+  width: 340px;
+  margin-bottom: 5px;
+}
+
+.car-rent-item-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 55px;
+}
+
+.car-rent-item-btns > * {
+  cursor: pointer;
+}

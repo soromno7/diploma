@@ -22,27 +22,24 @@ public class OrderService {
     private UserRepo userRepo;
     @Autowired
     private CarRepo carRepo;
-    @Autowired
-    private DealerRepo dealerRepo;
 
-    public OrderEntity create(OrderEntity order, Long userID, Long dealerID, Long carID) {
+    public OrderEntity create(OrderEntity order, Long userID, Long carID) {
         UserEntity user = userRepo.findById(userID).get();
-        DealerEntity dealer = dealerRepo.findById(dealerID).get();
         CarEntity car = carRepo.findById(carID).get();
 
         Date date = new Date();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-        SimpleDateFormat formatTime = new SimpleDateFormat("kk:mm");
         String strDate = formatDate.format(date);
-        String strTime = formatTime.format(date);
-
+        String[] strEnd = formatDate.format(date).split("[.]");
+        Integer yearEnd = Integer.parseInt(strEnd[2]) + Integer.parseInt(order.getDuration())/12;
+        strEnd[2] = String.valueOf(yearEnd);
 
         order.setUser(user);
-        order.setDealer(dealer);
+        order.setDealer(car.getDealer());
         order.setCar(car);
         order.setOrderDate(strDate);
-        order.setOrderTime(strTime);
-
+        order.setDuration(order.getDuration());
+        order.setEnd_date(strEnd[0] + "." + strEnd[1] + "." + strEnd[2]);
 
         return orderRepo.save(order);
     }

@@ -1,6 +1,8 @@
+import carPic from "./no-car-photo.svg";
 import axios from "axios";
-import x from "./car.svg";
 import { useEffect, useState } from "react";
+import CarRepairIcon from "@mui/icons-material/CarRepair";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   Modal,
   Box,
@@ -12,10 +14,7 @@ import {
   FormControl,
   Select,
 } from "@mui/material";
-
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import "./car.css";
 
 function MyCarPage() {
   const userData = sessionStorage.user;
@@ -25,113 +24,7 @@ function MyCarPage() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setPrice("");
   };
-
-  const [openService, setOpenService] = useState(false);
-  const handleOpenService = () => setOpenService(true);
-  const handleCloseService = () => {
-    setOpenService(false);
-  };
-
-  const [price, setPrice] = useState();
-  const [quantity, setQuantity] = useState();
-  const [date, setDate] = useState();
-
-  const [car, setCar] = useState({});
-  const [carName, setCarName] = useState("");
-  const [dealer, setDealer] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [orderDate, setOrderDate] = useState("");
-  const [orderTime, setOrderTime] = useState("");
-  const [plateNumber, setPlateNumber] = useState("");
-  const [year, setYear] = useState("");
-  const [carID, setCarID] = useState('')
-  const [userID, setUserID] = useState('')
-
-  const [contract, setContract] = useState("");
-  const [contractQuantity, setContractQuantity] = useState("");
-  const [services, setServices] = useState([]);
-  const [dealerID, setDealerID] = useState();
-  const [service, setService] = useState();
-
-  const handleData = (car) => {
-    setCarName(car.carName);
-    setDealer(car.dealer);
-    setStart(car.startDate);
-    setEnd(car.endDate);
-    setOrderDate(car.orderDate);
-    setOrderTime(car.orderTime);
-    setPlateNumber(car.plateNumber);
-    setYear(car.year);
-    setContractQuantity(car.contractQuantity);
-    setDealerID(car.dealerID)
-    setCarID(car.carID)
-    setUserID(car.userID)
-    console.log(car)
-  };
-
-  const createHandler = async () => {
-    const obj = {
-      price,
-      quantity,
-    };
-
-    await axios
-      .post("http://localhost:8080/contract/add", obj)
-      .then((res) => {
-        setContract(res.data);
-        updateOrder(res.data.id);
-        setContractQuantity(res.data.quantity);
-      })
-      .then(() => handleClose());
-  };
-
-  const updateOrder = async (contract) => {
-    await axios.patch(
-      `http://localhost:8080/order/update/${carID}/${contract}`
-    );
-  };
-
-  const loadServices = async () => {
-    await axios
-    .get(`http://localhost:8080/service/get-by-dealer/${dealerID}`)
-    .then((res) => setServices(res.data))
-  }
-
-  const calculatePrice = async () => {
-    const data = {
-      quantity,
-    };
-
-    await axios
-      .post("http://localhost:8080/contract/get-price", data)
-      .then((res) => setPrice(res.data));
-  };
-
-  const getCar = async () => {
-    await axios
-      .get(`http://localhost:8080/order/get-last/${id}`)
-      .then((res) => {
-        setCar(res.data);
-        console.log(res.data)
-      })
-      .then(() => handleData(car));
-  };
-
-  const bookService = async () => {
-    const obj = {
-      date,
-      service
-    }
-
-    console.log(obj)
-    await axios.post(`http://localhost:8080/maintenance/create/${Number(userID)}/${Number(carID)}`, obj)
-    .then((res) => console.log(res.data))
-    .then(() => handleCloseService())
-    .then(() => setService(''))
-  }
 
   const style = {
     position: "absolute",
@@ -144,16 +37,18 @@ function MyCarPage() {
     p: 4,
   };
 
-  useEffect(() => {
-    getCar();
-    if(dealerID) loadServices()
-  }, [year]);
+  const [cars, setCars] = useState([]);
+  const getCars = async () => {
+    await axios
+      .get(`http://localhost:8080/order/get-by-user/${id}`)
+      .then((res) => setCars(res.data));
+  };
 
-  if (!carName) return <span>Оформите заказ</span>;
+  useEffect(() => {
+    getCars();
+  }, []);
   return (
-    <div
-      style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
-    >
+    <div className="car-rent-container">
       <Modal
         open={open}
         onClose={handleClose}
@@ -167,207 +62,279 @@ function MyCarPage() {
             component="h4"
             style={{ textAlign: "center" }}
           >
-            Введите количество посещений
+            Добавить автомобиль
           </Typography>
           <Typography id="descr" sx={{ mt: 4 }} component={"span"}>
             <div className="modal-container">
+              <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="dealer-label">Дилер</InputLabel>
+                <Select
+                  labelId="dealer-label"
+                  id="dealer-label"
+                  // value={dealer}
+                  // onChange={(e) => setDealer(e.target.value)}
+                >
+                  {/* {dealers.map((el) => (
+                    <MenuItem value={el.id} key={`${el.name} + ${el.id}`}>
+                      {el.name}
+                    </MenuItem>
+                  ))} */}
+                </Select>
+              </FormControl>
               <TextField
                 id="filled-basic"
-                label="Количество осмотров"
+                label="Название"
                 variant="filled"
                 style={{ backgroundColor: "white", borderRadius: "4px" }}
                 onChange={(val) => {
-                  setQuantity(val.target.value);
+                  // setName(val.target.value);
                 }}
                 sx={{
                   width: 350,
                 }}
                 InputProps={{ sx: { height: 52 } }}
               />
-              {price == "" ? (
-                ""
-              ) : (
-                <div>
-                  <span>Стоимость:</span>
-                  <span>{price}</span>
-                </div>
-              )}
-
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
-                onClick={calculatePrice}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "350px",
+                }}
               >
-                Рассчитать
-              </Button>
-              {price == "" ? (
-                ""
-              ) : (
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: "white", color: "black" }}
-                  onClick={createHandler}
-                >
-                  Оформить
-                </Button>
-              )}
-            </div>
-          </Typography>
-        </Box>
-      </Modal>
-      <Modal
-        open={openService}
-        onClose={handleCloseService}
-        aria-labelledby="service"
-        aria-describedby="service"
-      >
-        <Box sx={style}>
-          <Typography
-            id="service"
-            variant="h6"
-            component="h4"
-            style={{ textAlign: "center" }}
-          >
-            Введите дату посещения СТО
-          </Typography>
-          <Typography id="service" sx={{ mt: 4 }} component={"span"}>
-            <div className="modal-container">
-              <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="dealer-label">Адрес</InputLabel>
-                <Select
-                  labelId="dealer-label"
-                  id="dealer-label"
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                >
-                  {services.map((el) => (
-                    <MenuItem value={`${el.city}, ${el.street}, ${el.street_number}`} key={`${el.city} + ${el.id}`}>
-                      {el.city}, {el.street}, {el.street_number}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Дата посещения СТО"
+                <TextField
+                  id="filled-basic"
+                  label="Год"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
                   onChange={(val) => {
-                    setDate(
-                      val.$d
-                        .toLocaleDateString("en-GB")
-                        .replace("/", ".")
-                        .replace("/", ".")
-                    );
+                    // setYear(val.target.value);
                   }}
-                  format="DD.MM.YYYY"
+                  sx={{
+                    width: 165,
+                  }}
+                  InputProps={{ sx: { height: 52 } }}
                 />
-              </LocalizationProvider>
+                <TextField
+                  id="filled-basic"
+                  label="Объём двигателя"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  onChange={(val) => {
+                    // setEngineCapacity(val.target.value);
+                  }}
+                  sx={{
+                    width: 165,
+                  }}
+                  InputProps={{ sx: { height: 52 } }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "350px",
+                }}
+              >
+                <TextField
+                  id="filled-basic"
+                  label="Номер"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  onChange={(val) => {
+                    // setPlateNumber(val.target.value);
+                  }}
+                  sx={{
+                    width: 165,
+                  }}
+                  InputProps={{ sx: { height: 52 } }}
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Тариф"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  onChange={(val) => {
+                    // setTariff(val.target.value);
+                  }}
+                  sx={{
+                    width: 165,
+                  }}
+                  InputProps={{ sx: { height: 52 } }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "350px",
+                }}
+              >
+                <FormControl variant="filled" sx={{ m: 1, minWidth: 165 }}>
+                  <InputLabel id="gearbox-label">Коробка</InputLabel>
+                  <Select
+                    labelId="gearbox-label"
+                    id="gearbox-label"
+                    // value={gearbox}
+                    // onChange={(e) => setGearbox(e.target.value)}
+                  >
+                    <MenuItem value="АКПП">АКПП</MenuItem>
+                    <MenuItem value="МКПП">МКПП</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl variant="filled" sx={{ m: 1, minWidth: 165 }}>
+                  <InputLabel id="fuel-label">Топливо</InputLabel>
+                  <Select
+                    labelId="fuel-label"
+                    id="fuel-label"
+                    // value={fuel}
+                    // onChange={(e) => setFuel(e.target.value)}
+                  >
+                    <MenuItem value="Бензин">Бензин</MenuItem>
+                    <MenuItem value="Дизель">Дизель</MenuItem>
+                    <MenuItem value="Гибрид">Гибрид</MenuItem>
+                    <MenuItem value="Электричество">Электричество</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
               <Button
                 variant="contained"
                 style={{ backgroundColor: "white", color: "black" }}
-                onClick={bookService}
+                // onClick={}
               >
-                Записаться
+                Добавить
               </Button>
             </div>
           </Typography>
         </Box>
       </Modal>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "800px",
-          alignItems: "center",
-        }}
-      >
-        <img src={x} style={{ width: "500px", height: "500px" }} />
-        <div style={{ width: "200px", height: "180px", textAlign: "center" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ width: "83px" }}>Дилер</span>
-              <span>{dealer}</span>
+      <h2>Автомобили в лизинге</h2>
+      {cars.map((el) => (
+        <div
+          className="car-rent-item"
+          key={`${el.carName} ${el.year} ${el.engineCapacity}`}
+        >
+          <div className="car-rent-item-container">
+            <div className="car-rent-item-img">
+              <img src={carPic} alt="" />
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>Автомобиль</span>
-              <span>{carName}</span>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>Дата заказа</span>
-              <span>{orderDate}</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>Время заказа</span>
-              <span>{orderTime}</span>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>С</span>
-              <span>{start}</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>По</span>
-              <span>{end}</span>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>Год выпуска</span>
-              <span>{year}</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>Номер</span>
-              <span>{plateNumber}</span>
-            </div>
-          </div>
-          {contractQuantity ? (
-            <span>Количество посещений СТО: {contractQuantity}</span>
-          ) : (
-            ""
-          )}
-          <div>
-            {contractQuantity ? (
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
-                size="small"
-                onClick={handleOpenService}
+            <div className="car-rent-item-content">
+              <div className="car-rent-item-content-row">
+                <TextField
+                  id="filled-basic"
+                  label="Автомобиль"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.dealer + " " + el.carName}
+                  sx={{
+                    width: 200,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Год"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.year}
+                  sx={{
+                    width: 60,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Объём"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.engineCapacity}
+                  sx={{
+                    width: 70,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+              </div>
+              <div className="car-rent-item-content-row">
+                <TextField
+                  id="filled-basic"
+                  label="Коробка"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.gearbox}
+                  sx={{
+                    width: 130,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Топливо"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.fuel}
+                  sx={{
+                    width: 100,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Номер"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={el.plateNumber}
+                  sx={{
+                    width: 100,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+              </div>
+              <div
+                className="car-rent-item-content-row"
+                style={{ justifyContent: "start" }}
               >
-                Записаться на СТО
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
-                size="small"
-                onClick={handleOpen}
-              >
-                Оформить сервисный контракт
-              </Button>
-            )}
+                <TextField
+                  id="filled-basic"
+                  label="Дата заказа"
+                  variant="filled"
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    marginRight: "10px",
+                  }}
+                  value={el.orderDate}
+                  sx={{
+                    width: 105,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Длительность"
+                  variant="filled"
+                  style={{ backgroundColor: "white", borderRadius: "4px" }}
+                  value={`${el.duration} мес.`}
+                  sx={{
+                    width: 105,
+                  }}
+                  InputProps={{ sx: { height: 45 } }}
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div className="car-rent-item-btns">
+            <ClearIcon onClick={handleOpen} />
+            <CarRepairIcon />
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

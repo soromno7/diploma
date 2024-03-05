@@ -10,7 +10,6 @@ public class BankCardEntity {
     private Long id;
     private String number;
     private String expiry_date;
-    private String holder;
     private String cvv;
 
     @ManyToOne
@@ -42,14 +41,6 @@ public class BankCardEntity {
 
     public void setExpiry_date(String expiry_date) {
         this.expiry_date = expiry_date;
-    }
-
-    public String getHolder() {
-        return holder;
-    }
-
-    public void setHolder(String holder) {
-        this.holder = holder;
     }
 
     public String getCvv() {

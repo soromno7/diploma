@@ -14,9 +14,6 @@ public class DealerEntity {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dealer")
-    private List<OrderEntity> orders;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dealer")
     private List<CarEntity> cars;
 
     public DealerEntity() {

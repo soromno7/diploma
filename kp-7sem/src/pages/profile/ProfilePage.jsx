@@ -22,6 +22,9 @@ function ProfilePage() {
           <Link to="wallet" className="modal-aside-item">
             Кошелёк
           </Link>
+          <Link to="history" className="modal-aside-item">
+            История
+          </Link>
         </div>
         <Outlet />
       </LocalizationProvider>

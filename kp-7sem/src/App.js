@@ -5,20 +5,18 @@ import PrivateRoute from "./components/PrivateRoute";
 import UnknownPage from "./pages/unknown/UnknownPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import UsersPage from "./pages/users/UsersPage";
-import StationsPage from "./pages/stations/StationsPage";
 import DealersPage from "./pages/dealers/DealersPage";
 import CarsPage from "./pages/cars/CarsPage";
-import ContractsPage from "./pages/contracts/ContractsPage";
 import RentPage from "./pages/rent/RentPage";
 import WrapperPage from "./pages/wrapper/WrapperPage";
 import MainPage from "./pages/main/MainPage";
 import OrdersPage from "./pages/orders/OrdersPage";
 import UserOrdersPage from "./pages/userOrders/UserOrdersPage";
 import MyCarPage from "./pages/my-car/MyCarPage";
-import MaintenancesPage from "./pages/maintenances/MaintenancesPage";
 import BanPage from "./pages/ban/BanPage";
 import ProfileDataPage from "./pages/profile/ProfileDataPage";
-import ProfileWalletPage from "./pages/profile/ProfileWalletPage";
+import ProfileWalletPage from "./pages/profile/wallet/ProfileWalletPage";
+import ProfileHistoryPage from "./pages/profile/history/ProfileHistoryPage";
 
 function App() {
   return (
@@ -42,11 +40,11 @@ function App() {
           <Route path="cars" element={<CarsPage />} />
           <Route path="rent" element={<RentPage />} />
           <Route path="orders" element={<OrdersPage />} />
-          <Route path="my-orders" element={<UserOrdersPage />} />
           <Route path="my-car" element={<MyCarPage />} />
           <Route path="profile" element={<ProfilePage />}>
             <Route index element={<ProfileDataPage />}/>
             <Route path="wallet" element={<ProfileWalletPage />}/>
+            <Route path="history" element={<ProfileHistoryPage />}/>
           </Route>
         </Route>
         <Route path="*" element={<UnknownPage />} />

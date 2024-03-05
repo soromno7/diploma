@@ -107,5 +107,5 @@ public class UserEntity {
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
-    
+
 }

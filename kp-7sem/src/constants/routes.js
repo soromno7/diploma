@@ -35,10 +35,6 @@ export const UserRoutes = [
     name: "Аренда",
   },
   {
-    path: "my-orders",
-    name: "Мои заказы",
-  },
-  {
     path: "my-car",
     name: "Мой автомобиль",
   },

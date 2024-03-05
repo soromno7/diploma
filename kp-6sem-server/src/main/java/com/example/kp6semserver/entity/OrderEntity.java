@@ -12,11 +12,10 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String orderTime;
     private String orderDate;
     private String price;
-    private String start_date;
     private String end_date;
+    private String duration;
     private String promocode;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -41,14 +40,6 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public String getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(String orderTime) {
-        this.orderTime = orderTime;
-    }
-
     public String getOrderDate() {
         return orderDate;
     }
@@ -63,14 +54,6 @@ public class OrderEntity {
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    public String getStart_date() {
-        return start_date;
-    }
-
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
     }
 
     public String getEnd_date() {
@@ -111,5 +94,13 @@ public class OrderEntity {
 
     public void setDealer(DealerEntity dealer) {
         this.dealer = dealer;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

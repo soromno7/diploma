@@ -27,7 +27,6 @@ public class RentalService {
         List<OrderEntity> orders = orderRepo.findAll();
         String orderQuantity = String.valueOf(orders.size());
         String orderSum = orderSum(orders);
-        String lastOrderTime = orders.get(orders.size() - 1).getOrderTime();
 
         Date date = new Date();
         SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
@@ -39,7 +38,6 @@ public class RentalService {
         rental.setRecordTime(strTime);
         rental.setOrderQuantity(orderQuantity);
         rental.setOrderSum(orderSum);
-        rental.setLastOrderTime(lastOrderTime);
 
         return rentalRepo.save(rental);
     }
