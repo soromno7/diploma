@@ -12,6 +12,7 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
+import CellBtnDelete from "../../components/cells/CellBtnDelete";
 
 function CarsPage() {
   const [rows, setRows] = useState([]);
@@ -62,9 +63,9 @@ function CarsPage() {
       });
   };
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (carID) => {
     await axios
-      .delete(`http://localhost:8080/car/delete/${selRow.id}`)
+      .delete(`http://localhost:8080/car/delete/${carID}`)
       .then(() => updateTable());
   };
 
@@ -88,6 +89,14 @@ function CarsPage() {
     { field: "gearbox", headerName: "Коробка" },
     { field: "plateNumber", headerName: "Номер" },
     { field: "tariff", headerName: "Тариф" },
+    { field: "isAvailable", headerName: "Готов"},
+    {
+      field: "",
+      headerName: "Действие",
+      editable: false,
+      cellRenderer: CellBtnDelete,
+      cellRendererParams: { deleteHandler },
+    },
   ];
 
   const style = {
@@ -269,14 +278,6 @@ function CarsPage() {
           onClick={handleOpen}
         >
           Добавить
-        </Button>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "white", color: "black" }}
-          size="small"
-          onClick={deleteHandler}
-        >
-          Удалить
         </Button>
       </div>
       <Table

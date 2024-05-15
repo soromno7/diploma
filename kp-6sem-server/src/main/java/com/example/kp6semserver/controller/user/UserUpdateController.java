@@ -15,7 +15,7 @@ public class UserUpdateController {
     private UserService userService;
 
     @PatchMapping("/{id}")
-    UserEntity updateUser(@RequestBody UserEntity user, @PathVariable Long id) throws ObjDoesNotExist {
+    UserEntity updateUser(@RequestBody UserEntity user) throws ObjDoesNotExist {
         return userService.update(user);
     }
 

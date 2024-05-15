@@ -15,10 +15,10 @@ public class CarUpdateController {
     @Autowired
     private CarService carService;
 
-    @PutMapping("/{id}")
-    CarEntity updateCar(@RequestBody CarEntity car, @PathVariable Long id) throws ObjDoesNotExist {
-//        return carService.update(car);
+    @PatchMapping ("/{id}")
+    CarEntity updateCar(@RequestBody CarEntity car) throws ObjDoesNotExist {
         return null;
+//        return carService.update(car);
     }
 
 }

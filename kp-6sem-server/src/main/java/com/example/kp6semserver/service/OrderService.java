@@ -34,6 +34,8 @@ public class OrderService {
         Integer yearEnd = Integer.parseInt(strEnd[2]) + Integer.parseInt(order.getDuration())/12;
         strEnd[2] = String.valueOf(yearEnd);
 
+        car.setIsAvailable("Нет");
+
         order.setUser(user);
         order.setDealer(car.getDealer());
         order.setCar(car);
@@ -62,14 +64,14 @@ public class OrderService {
         return promocode;
     }
 
-    public Double calculatePrice(Integer tariff, String promocode, Integer days) {
-        OrderService orderService = new OrderService();
-        String promocode_server = orderService.createPromocode();
-        Boolean flag = false;
-        if(promocode_server.equals(promocode)) flag = true;
-        if(flag) return tariff * days * 0.8;
-        return (double) (tariff * days);
-    }
+//    public Double calculatePrice(Integer tariff, String promocode, Integer days) {
+//        OrderService orderService = new OrderService();
+//        String promocode_server = orderService.createPromocode();
+//        Boolean flag = false;
+//        if(promocode_server.equals(promocode)) flag = true;
+//        if(flag) return tariff * days * 0.8;
+//        return (double) (tariff * days);
+//    }
 
     public ArrayList<OrderModel> getAllOrders() { return OrderModel.toModel(orderRepo.findAll());}
 

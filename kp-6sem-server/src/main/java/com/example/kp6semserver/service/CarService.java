@@ -25,6 +25,7 @@ public class CarService {
         DealerEntity dealer = dealerRepo.findById(dealerID).get();
 
         car.setDealer(dealer);
+        car.setIsAvailable("Да");
         return carRepo.save(car);
     }
 
@@ -41,12 +42,6 @@ public class CarService {
         }
         return resArr;
     }
-
-//    public Double[] getLocation (Long id) {
-//        Optional<CarEntity> optionalCar = carRepo.findById(id);
-//        CarEntity car = optionalCar.get();
-//        return car.getLocation();
-//    }
 
     public void deleteCar(Long id) { carRepo.deleteById(id);}
 

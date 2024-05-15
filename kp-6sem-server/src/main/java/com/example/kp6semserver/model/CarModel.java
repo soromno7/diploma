@@ -16,6 +16,7 @@ public class CarModel {
     private String gearbox;
     private String tariff;
     private String dealer;
+    private String isAvailable;
 
 
     public static CarModel toModelOne(CarEntity entity) {
@@ -29,6 +30,7 @@ public class CarModel {
         model.setDealer(entity.getDealer().getName());
         model.setFuel(entity.getFuel());
         model.setGearbox(entity.getGearbox());
+        model.setIsAvailable(entity.getIsAvailable());
 
         return model;
     }
@@ -116,5 +118,13 @@ public class CarModel {
 
     public void setGearbox(String gearbox) {
         this.gearbox = gearbox;
+    }
+
+    public String getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 }

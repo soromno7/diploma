@@ -2,7 +2,7 @@ import { useState } from "react";
 import Table from "../../components/Table";
 import { Modal, Box, Typography, Button, TextField } from "@mui/material";
 import axios from "axios";
-import CellBtnDealers from "../../components/cells/CellBtnDealers";
+import CellBtnDelete from "../../components/cells/CellBtnDelete";
 
 function DealersPage() {
   const [rows, setRows] = useState([]);
@@ -46,7 +46,7 @@ function DealersPage() {
       field: "",
       headerName: "Действие",
       editable: false,
-      cellRenderer: CellBtnDealers,
+      cellRenderer: CellBtnDelete,
       cellRendererParams: { deleteHandler },
     },
   ];
@@ -113,14 +113,6 @@ function DealersPage() {
           onClick={handleOpen}
         >
           Добавить
-        </Button>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "white", color: "black" }}
-          size="small"
-          onClick={deleteHandler}
-        >
-          Удалить
         </Button>
       </div>
       <Table

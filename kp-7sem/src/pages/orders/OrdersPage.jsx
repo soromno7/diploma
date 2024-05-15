@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Table from "../../components/Table";
 import axios from "axios";
-import CellBtnOrder from "../../components/cells/CellBtnOrder";
+import CellBtnDelete from "../../components/cells/CellBtnDelete";
 
 function OrdersPage() {
   const [rows, setRows] = useState([]);
@@ -17,24 +17,16 @@ function OrdersPage() {
 
   const cols = [
     { field: "id", headerName: "ID" },
-    { field: "firstName", headerName: "Имя" },
-    { field: "lastName", headerName: "Фамилия" },
-    { field: "orderDate", headerName: "Дата заказа" },
-    { field: "orderTime", headerName: "Время заказа" },
-    { field: "startDate", headerName: "С" },
-    { field: "endDate", headerName: "По" },
+    { field: "userID", headerName: "ID Клиента" },
+    { field: "carID", headerName: "ID Авто" },
+    { field: "start", headerName: "Начало" },
+    { field: "end", headerName: "Конец" },
     { field: "price", headerName: "Цена" },
-    { field: "promocode", headerName: "Промокод" },
-    { field: "dealer", headerName: "Дилер" },
-    { field: "carName", headerName: "Автомобиль" },
-    { field: "year", headerName: "Год" },
-    { field: "engineCapacity", headerName: "Объём" },
-    { field: "plateNumber", headerName: "Номер" },
     {
       field: "",
       headerName: "Действие",
       editable: false,
-      cellRenderer: CellBtnOrder,
+      cellRenderer: CellBtnDelete,
       cellRendererParams: { deleteHandler },
     },
   ];

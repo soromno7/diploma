@@ -11,8 +11,18 @@ function Table({ URL, rows, cols, setRows, setUpdateTable, setSelectedRow, updat
   };
 
   const updateRow = async (URL, item) => {
+    console.log(item)
+    const obj = {
+      id: item.id,
+      engineCapacity: item.engineCapacity,
+      isAvailable: item.isAvailable,
+      name: item.name,
+      plateNumber: item.plateNumber,
+      tariff: item.tariff,
+      year: item.year
+    }
     await axios
-    .patch(`http://localhost:8080/${URL}/${item.id}`, item)
+    .patch(`http://localhost:8080/${URL}/${item.id}`, obj)
   }
 
   useEffect(() => {

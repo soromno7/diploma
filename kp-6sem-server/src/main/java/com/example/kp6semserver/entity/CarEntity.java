@@ -18,12 +18,13 @@ public class CarEntity {
     private String gearbox;
     private String fuel;
     private String tariff;
+    private String isAvailable;
 
     @ManyToOne
     @JoinColumn(name = "dealer_id")
     private DealerEntity dealer;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<OrderEntity> order;
 
     public CarEntity() {
@@ -99,5 +100,13 @@ public class CarEntity {
 
     public void setFuel(String fuel) {
         this.fuel = fuel;
+    }
+
+    public String getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 }

@@ -3,6 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CarRepairIcon from "@mui/icons-material/CarRepair";
 import ClearIcon from "@mui/icons-material/Clear";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   Modal,
   Box,
@@ -21,6 +24,8 @@ function MyCarPage() {
   const id = Number(JSON.parse(userData).id);
 
   const [open, setOpen] = useState(false);
+  const [date, setDate] = useState({});
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -62,148 +67,55 @@ function MyCarPage() {
             component="h4"
             style={{ textAlign: "center" }}
           >
-            Добавить автомобиль
+            Записаться на СТО
           </Typography>
           <Typography id="descr" sx={{ mt: 4 }} component={"span"}>
-            <div className="modal-container">
-              <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="dealer-label">Дилер</InputLabel>
-                <Select
-                  labelId="dealer-label"
-                  id="dealer-label"
-                  // value={dealer}
-                  // onChange={(e) => setDealer(e.target.value)}
-                >
-                  {/* {dealers.map((el) => (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <div className="modal-container">
+                <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="dealer-label">Куда</InputLabel>
+                  <Select
+                    labelId="dealer-label"
+                    id="dealer-label"
+                    // value={dealer}
+                    // onChange={(e) => setDealer(e.target.value)}
+                  >
+                    {/* {dealers.map((el) => (
                     <MenuItem value={el.id} key={`${el.name} + ${el.id}`}>
                       {el.name}
                     </MenuItem>
                   ))} */}
-                </Select>
-              </FormControl>
-              <TextField
-                id="filled-basic"
-                label="Название"
-                variant="filled"
-                style={{ backgroundColor: "white", borderRadius: "4px" }}
-                onChange={(val) => {
-                  // setName(val.target.value);
-                }}
-                sx={{
-                  width: 350,
-                }}
-                InputProps={{ sx: { height: 52 } }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "350px",
-                }}
-              >
-                <TextField
-                  id="filled-basic"
-                  label="Год"
-                  variant="filled"
-                  style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  onChange={(val) => {
-                    // setYear(val.target.value);
-                  }}
-                  sx={{
-                    width: 165,
-                  }}
-                  InputProps={{ sx: { height: 52 } }}
-                />
-                <TextField
-                  id="filled-basic"
-                  label="Объём двигателя"
-                  variant="filled"
-                  style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  onChange={(val) => {
-                    // setEngineCapacity(val.target.value);
-                  }}
-                  sx={{
-                    width: 165,
-                  }}
-                  InputProps={{ sx: { height: 52 } }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "350px",
-                }}
-              >
-                <TextField
-                  id="filled-basic"
-                  label="Номер"
-                  variant="filled"
-                  style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  onChange={(val) => {
-                    // setPlateNumber(val.target.value);
-                  }}
-                  sx={{
-                    width: 165,
-                  }}
-                  InputProps={{ sx: { height: 52 } }}
-                />
-                <TextField
-                  id="filled-basic"
-                  label="Тариф"
-                  variant="filled"
-                  style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  onChange={(val) => {
-                    // setTariff(val.target.value);
-                  }}
-                  sx={{
-                    width: 165,
-                  }}
-                  InputProps={{ sx: { height: 52 } }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  width: "350px",
-                }}
-              >
-                <FormControl variant="filled" sx={{ m: 1, minWidth: 165 }}>
-                  <InputLabel id="gearbox-label">Коробка</InputLabel>
-                  <Select
-                    labelId="gearbox-label"
-                    id="gearbox-label"
-                    // value={gearbox}
-                    // onChange={(e) => setGearbox(e.target.value)}
-                  >
-                    <MenuItem value="АКПП">АКПП</MenuItem>
-                    <MenuItem value="МКПП">МКПП</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl variant="filled" sx={{ m: 1, minWidth: 165 }}>
-                  <InputLabel id="fuel-label">Топливо</InputLabel>
-                  <Select
-                    labelId="fuel-label"
-                    id="fuel-label"
-                    // value={fuel}
-                    // onChange={(e) => setFuel(e.target.value)}
-                  >
-                    <MenuItem value="Бензин">Бензин</MenuItem>
-                    <MenuItem value="Дизель">Дизель</MenuItem>
-                    <MenuItem value="Гибрид">Гибрид</MenuItem>
-                    <MenuItem value="Электричество">Электричество</MenuItem>
-                  </Select>
-                </FormControl>
+                <div
+                  style={{
+                    backgroundColor: "#ebebeb",
+                    borderRadius: "4px",
+                    width: "100%",
+                  }}
+                >
+                  <DatePicker
+                    label="Когда"
+                    onChange={(val) => {
+                      setDate(
+                        val.$d
+                          .toLocaleDateString("en-GB")
+                          .replace("/", ".")
+                          .replace("/", ".")
+                      );
+                    }}
+                    format="DD.MM.YYYY"
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "white", color: "black" }}
+                  // onClick={}
+                >
+                  Записаться
+                </Button>
               </div>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "white", color: "black" }}
-                // onClick={}
-              >
-                Добавить
-              </Button>
-            </div>
+            </LocalizationProvider>
           </Typography>
         </Box>
       </Modal>
@@ -330,8 +242,8 @@ function MyCarPage() {
             </div>
           </div>
           <div className="car-rent-item-btns">
-            <ClearIcon onClick={handleOpen} />
-            <CarRepairIcon />
+            <ClearIcon />
+            <CarRepairIcon onClick={handleOpen} />
           </div>
         </div>
       ))}

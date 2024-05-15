@@ -1,12 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  InputLabel,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { Link } from "react-router-dom";
 import Slider from "@mui/material/Slider";
 import "./cars.css";
 import CarItem from "../../components/cars/CarItem.jsx";
 
 function RentPage() {
+  const userData = sessionStorage.user;
+  const id = Number(JSON.parse(userData).id);
+
   const [cars, setCars] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [card, setCard] = useState();
 
   const [open, setOpen] = useState(false);
   const [duration, setDuration] = useState(12);
@@ -15,10 +30,8 @@ function RentPage() {
 
   const handleOpen = (el) => {
     setSelectedCar(el);
-    setPrice(el.tariff * 1.2);
+    setPrice(Number(el.tariff) * (1 + 0.2 * ((60 - 12) / 12)));
     setOpen(true);
-    setPrice((duration / 12) * 5);
-    console.log(duration / 12);
   };
   const handleClose = () => {
     setPrice("");
@@ -40,18 +53,23 @@ function RentPage() {
   const loadCars = async () => {
     await axios
       .get(`http://localhost:8080/car/get-all`)
-      .then((res) => setCars(res.data));
+      .then((res) => setCars(res.data.filter(item => item.isAvailable === "Да")))
+
   };
 
-  const userData = sessionStorage.user;
-  const id = Number(JSON.parse(userData).id);
+  const loadCards = async () => {
+    await axios
+      .get(`http://localhost:8080/card/get-by-user/${id}`)
+      .then((res) => setCards(res.data));
+  };
 
   const format = (val) => `${val} мес`;
 
   const handleChange = (e) => {
     setDuration(e.target.value);
-    setPrice((duration / 12) * 5);
-    console.log(e.target.value);
+    setPrice(
+      Number(selectedCar.tariff) * (1 + 0.2 * ((60 - e.target.value) / 12))
+    );
   };
 
   const createHandler = async () => {
@@ -60,16 +78,20 @@ function RentPage() {
       duration,
     };
 
+    console.log(duration)
+
     await axios.post(
       `http://localhost:8080/order/create/${id}/${selectedCar.id}`,
       order
     );
 
     handleClose();
+    loadCars();
   };
 
   useEffect(() => {
     loadCars();
+    loadCards();
   }, []);
 
   return (
@@ -99,24 +121,50 @@ function RentPage() {
           </Typography>
           <Typography id="descr" sx={{ mt: 4 }} component={"span"}>
             <div className="modal-container">
-              <div
+              <span>К оплате в месяц: {price} Br</span>
+              <Slider
+                valueLabelDisplay="on"
+                getAriaValueText={format}
+                valueLabelFormat={format}
+                onChange={handleChange}
+                step={12}
+                min={12}
+                max={60}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "380px",
+                  width: "370px",
                 }}
-              >
-                <Slider
-                  valueLabelDisplay="on"
-                  getAriaValueText={format}
-                  valueLabelFormat={format}
-                  onChange={handleChange}
-                  step={12}
-                  min={12}
-                  max={60}
-                />
-              </div>
-              <span>К оплате: {price} Br</span>
+              />
+              {cards.length !== 0 ? (
+                <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="dealer-label">Банковская карта</InputLabel>
+                  <Select
+                    labelId="dealer-label"
+                    id="dealer-label"
+                    value={card}
+                    onChange={(e) => setCard(e.target.value)}
+                  >
+                    {cards.map((el) => (
+                      <MenuItem value={el.id} key={`${el.name} + ${el.id}`}>
+                        {el.number}, {el.expiry_date}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : (
+                <span>
+                  Нет добавленных карт? &nbsp;
+                  <Link
+                    to="http://localhost:3000/main/profile/wallet"
+                    style={{
+                      cursor: "pointer",
+                      textDecoration: "none",
+                      color: "blue",
+                    }}
+                  >
+                    Добавить
+                  </Link>
+                </span>
+              )}
               <div>
                 <Button
                   variant="contained"

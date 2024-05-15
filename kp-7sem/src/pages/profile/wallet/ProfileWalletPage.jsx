@@ -17,6 +17,7 @@ function ProfileWalletPage() {
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -25,8 +26,6 @@ function ProfileWalletPage() {
     await axios
       .get(`http://localhost:8080/card/get-by-user/${id}`)
       .then((res) => setCards(res.data));
-
-    console.log(cards);
   };
 
   const deleteHandler = async (card_id) => {
@@ -38,7 +37,7 @@ function ProfileWalletPage() {
   const createHandler = async () => {
     const card = {
       number,
-      expiry_date: expiryDate,
+      expiry_date: expiryDate[1] + "." + expiryDate[2][2] + expiryDate[2][3],
       cvv,
     };
 
@@ -121,6 +120,7 @@ function ProfileWalletPage() {
                           .toLocaleDateString("en-GB")
                           .replace("/", ".")
                           .replace("/", ".")
+                          .split('.')
                       );
                     }}
                     disableOpenPicker={true}

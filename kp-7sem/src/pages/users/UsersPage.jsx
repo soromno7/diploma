@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "./users.css";
 import axios from "axios";
-import CellBtns from "../../components/cells/CellBtns";
+import CellBtns from "../../components/cells/CellBtnUsers";
 
 function UsersPage() {
   const [rows, setRows] = useState([]);
