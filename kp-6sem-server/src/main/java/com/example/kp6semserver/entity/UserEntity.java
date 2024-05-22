@@ -33,6 +33,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BankCardEntity> cards;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ServiceEntity> service;
+
     public UserEntity() {
     }
 

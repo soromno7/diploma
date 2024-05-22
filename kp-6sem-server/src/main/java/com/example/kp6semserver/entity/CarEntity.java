@@ -23,10 +23,8 @@ public class CarEntity {
     @ManyToOne
     @JoinColumn(name = "dealer_id")
     private DealerEntity dealer;
-
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<OrderEntity> order;
-
     public CarEntity() {
     }
 

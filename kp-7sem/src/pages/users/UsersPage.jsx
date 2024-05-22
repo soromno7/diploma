@@ -70,6 +70,7 @@ function UsersPage() {
     { field: "phone", headerName: "Номер телефона" },
     { field: "password", headerName: "Пароль" },
     { field: "status", headerName: "Статус" },
+    { field: "role", headerName: "Роль" },
     {
       field: "",
       headerName: "Действие",

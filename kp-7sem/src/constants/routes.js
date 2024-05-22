@@ -20,9 +20,21 @@ export const AdminRoutes = [
     name: "Отчёты",
   },
   {
+    path: "service",
+    name: "Сервис",
+  },
+  {
+    path: "stations",
+    name: "СТО",
+  },
+  {
+    path: "analytics",
+    name: "Аналитика",
+  },
+  {
     path: "profile",
     name: "Профиль",
-  }
+  },
 ];
 
 export const UserRoutes = [
@@ -41,5 +53,5 @@ export const UserRoutes = [
   {
     path: "profile",
     name: "Профиль",
-  }
+  },
 ];

@@ -23,12 +23,20 @@ function MyCarPage() {
   const userData = sessionStorage.user;
   const id = Number(JSON.parse(userData).id);
 
+  const [order, setOrder] = useState();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState({});
+  const [station, setStation] = useState();
+  const [stations, setStations] = useState([]);
+  const [cars, setOrders] = useState([]);
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = (el) => {
+    setOpen(true);
+    setOrder(el.id)
+  }
   const handleClose = () => {
     setOpen(false);
+    setStation('')
   };
 
   const style = {
@@ -42,16 +50,37 @@ function MyCarPage() {
     p: 4,
   };
 
-  const [cars, setCars] = useState([]);
+  const createHandler = async () => {
+    const service = {
+      address: station[1] + ", " + station[2] + ", " + station[3],
+      date
+    };
+    
+    await axios
+      .post(`http://localhost:8080/service/create/${id}/${order}/${station[0]}`, service)
+      .then(() => handleClose())
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
   const getCars = async () => {
     await axios
       .get(`http://localhost:8080/order/get-by-user/${id}`)
-      .then((res) => setCars(res.data));
+      .then((res) => setOrders(res.data))
+  };
+
+  const loadStations = async () => {
+    await axios
+      .get("http://localhost:8080/station/get-all")
+      .then((res) => setStations(res.data));
   };
 
   useEffect(() => {
     getCars();
+    loadStations();
   }, []);
+
   return (
     <div className="car-rent-container">
       <Modal
@@ -73,18 +102,18 @@ function MyCarPage() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <div className="modal-container">
                 <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id="dealer-label">Куда</InputLabel>
+                  <InputLabel id="station-label">Куда</InputLabel>
                   <Select
-                    labelId="dealer-label"
-                    id="dealer-label"
-                    // value={dealer}
-                    // onChange={(e) => setDealer(e.target.value)}
+                    labelId="station-label"
+                    id="station-label"
+                    value={station}
+                    onChange={(e) => setStation(e.target.value)}
                   >
-                    {/* {dealers.map((el) => (
-                    <MenuItem value={el.id} key={`${el.name} + ${el.id}`}>
-                      {el.name}
+                  {stations.map((el) => (
+                    <MenuItem value={[el.id, el.city, el.street, el.building]} key={`${el.street} + ${el.id}`}>
+                      {el.city}, {el.street}, {el.building}
                     </MenuItem>
-                  ))} */}
+                  ))}
                   </Select>
                 </FormControl>
                 <div
@@ -110,7 +139,7 @@ function MyCarPage() {
                 <Button
                   variant="contained"
                   style={{ backgroundColor: "white", color: "black" }}
-                  // onClick={}
+                  onClick={createHandler}
                 >
                   Записаться
                 </Button>
@@ -119,11 +148,11 @@ function MyCarPage() {
           </Typography>
         </Box>
       </Modal>
-      <h2>Автомобили в лизинге</h2>
+      <h2>Ваши автомобили</h2>
       {cars.map((el) => (
         <div
           className="car-rent-item"
-          key={`${el.carName} ${el.year} ${el.engineCapacity}`}
+          key={`${el.car.name} ${el.car.year} ${el.car.engineCapacity}`}
         >
           <div className="car-rent-item-container">
             <div className="car-rent-item-img">
@@ -136,7 +165,7 @@ function MyCarPage() {
                   label="Автомобиль"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.dealer + " " + el.carName}
+                  value={el.dealer.name + " " + el.car.name}
                   sx={{
                     width: 200,
                   }}
@@ -148,7 +177,7 @@ function MyCarPage() {
                   label="Год"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.year}
+                  value={el.car.year}
                   sx={{
                     width: 60,
                   }}
@@ -160,7 +189,7 @@ function MyCarPage() {
                   label="Объём"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.engineCapacity}
+                  value={el.car.engineCapacity}
                   sx={{
                     width: 70,
                   }}
@@ -174,7 +203,7 @@ function MyCarPage() {
                   label="Коробка"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.gearbox}
+                  value={el.car.gearbox}
                   sx={{
                     width: 130,
                   }}
@@ -186,7 +215,7 @@ function MyCarPage() {
                   label="Топливо"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.fuel}
+                  value={el.car.fuel}
                   sx={{
                     width: 100,
                   }}
@@ -198,7 +227,7 @@ function MyCarPage() {
                   label="Номер"
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
-                  value={el.plateNumber}
+                  value={el.car.plateNumber}
                   sx={{
                     width: 100,
                   }}
@@ -243,7 +272,7 @@ function MyCarPage() {
           </div>
           <div className="car-rent-item-btns">
             <ClearIcon />
-            <CarRepairIcon onClick={handleOpen} />
+            <CarRepairIcon onClick={() => handleOpen(el)} />
           </div>
         </div>
       ))}

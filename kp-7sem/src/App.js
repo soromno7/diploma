@@ -17,6 +17,10 @@ import BanPage from "./pages/ban/BanPage";
 import ProfileDataPage from "./pages/profile/ProfileDataPage";
 import ProfileWalletPage from "./pages/profile/wallet/ProfileWalletPage";
 import ProfileHistoryPage from "./pages/profile/history/ProfileHistoryPage";
+import RecordsPage from "./pages/records/RecordsPage";
+import AnalyticsPage from "./pages/analytics/AnalyticsPage";
+import StationsPage from "./pages/stations/StationsPage";
+import MaintenancesPage from "./pages/services/ServicesPage";
 
 function App() {
   return (
@@ -41,6 +45,10 @@ function App() {
           <Route path="rent" element={<RentPage />} />
           <Route path="orders" element={<OrdersPage />} />
           <Route path="my-car" element={<MyCarPage />} />
+          <Route path="records" element={<RecordsPage />} />
+          <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="stations" element={<StationsPage />} />
+          <Route path="service" element={<MaintenancesPage />} />
           <Route path="profile" element={<ProfilePage />}>
             <Route index element={<ProfileDataPage />}/>
             <Route path="wallet" element={<ProfileWalletPage />}/>

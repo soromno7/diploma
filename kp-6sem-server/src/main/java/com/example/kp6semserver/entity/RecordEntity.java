@@ -10,12 +10,11 @@ public class RecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String orderQuantity;
-    private String orderSum;
-    private String recordDate;
-    private String recordTime;
-    private String lastOrderTime;
+    private String date;
+    private String orders_quantity;
+    private String orders_revenue;
+    private String users_quantity;
+    private String cars_quantity;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,43 +31,43 @@ public class RecordEntity {
         this.id = id;
     }
 
-    public String getOrderQuantity() {
-        return orderQuantity;
+    public String getDate() {
+        return date;
     }
 
-    public void setOrderQuantity(String orderQuantity) {
-        this.orderQuantity = orderQuantity;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getOrderSum() {
-        return orderSum;
+    public String getOrders_quantity() {
+        return orders_quantity;
     }
 
-    public void setOrderSum(String orderSum) {
-        this.orderSum = orderSum;
+    public void setOrders_quantity(String orders_quantity) {
+        this.orders_quantity = orders_quantity;
     }
 
-    public String getRecordDate() {
-        return recordDate;
+    public String getOrders_revenue() {
+        return orders_revenue;
     }
 
-    public void setRecordDate(String recordDate) {
-        this.recordDate = recordDate;
+    public void setOrders_revenue(String orders_revenue) {
+        this.orders_revenue = orders_revenue;
     }
 
-    public String getRecordTime() {
-        return recordTime;
+    public String getUsers_quantity() {
+        return users_quantity;
     }
 
-    public void setRecordTime(String recordTime) {
-        this.recordTime = recordTime;
+    public void setUsers_quantity(String users_quantity) {
+        this.users_quantity = users_quantity;
     }
 
-    public String getLastOrderTime() {
-        return lastOrderTime;
+    public String getCars_quantity() {
+        return cars_quantity;
     }
 
-    public void setLastOrderTime(String lastOrderTime) {
-        this.lastOrderTime = lastOrderTime;
+    public void setCars_quantity(String cars_quantity) {
+        this.cars_quantity = cars_quantity;
     }
 }

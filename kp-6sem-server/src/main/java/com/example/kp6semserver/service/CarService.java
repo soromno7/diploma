@@ -38,27 +38,22 @@ public class CarService {
         ArrayList<CarModel> allCars = CarModel.toModel(carRepo.findAll());
 
         for(CarModel model : allCars) {
-            if(model.getDealer().equals(dealerName)) resArr.add(model);
+            if(model.getDealer_name().equals(dealerName)) resArr.add(model);
         }
         return resArr;
     }
 
     public void deleteCar(Long id) { carRepo.deleteById(id);}
 
-//    public CarEntity update (CarEntity car) throws ObjDoesNotExist {
-//        return carRepo.findById(car.getId())
-//                .map(newCar -> {
-//                    newCar.setBrand(car.getBrand());
-//                    newCar.setEngineCapacity(car.getEngineCapacity());
-//                    newCar.setIsMaintained(car.getIsMaintained());
-//                    newCar.setName(car.getName());
-//                    newCar.setPlateNumber(car.getPlateNumber());
-//                    newCar.setSeatsQuantity(car.getSeatsQuantity());
-//                    newCar.setStereo(car.getStereo());
-//                    newCar.setTariff(car.getTariff());
-//                    newCar.setYear(car.getYear());
-//                    newCar.setLocation(car.getLocation());
-//                    return carRepo.save(car);
-//                }).orElseThrow(() -> new ObjDoesNotExist("Такого автомобиля в системе не существует"));
-//    }
+    public CarEntity update (CarEntity car) throws ObjDoesNotExist {
+        Optional<CarEntity> original = carRepo.findById(car.getId());
+        original.get().setEngineCapacity(car.getEngineCapacity());
+        original.get().setName(car.getName());
+        original.get().setPlateNumber(car.getPlateNumber());
+        original.get().setTariff(car.getTariff());
+        original.get().setYear(car.getYear());
+        original.get().setFuel(car.getFuel());
+        original.get().setGearbox(car.getGearbox());
+        return carRepo.save(original.get());
+    }
 }

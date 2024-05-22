@@ -81,7 +81,7 @@ function CarsPage() {
 
   const cols = [
     { field: "id", headerName: "ID" },
-    { field: "dealer", headerName: "Дилер" },
+    { field: "dealer_name", headerName: "Дилер" },
     { field: "name", headerName: "Название" },
     { field: "year", headerName: "Год" },
     { field: "engineCapacity", headerName: "Объём" },

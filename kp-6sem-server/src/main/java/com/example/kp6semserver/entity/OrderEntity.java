@@ -1,10 +1,8 @@
 package com.example.kp6semserver.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -20,14 +18,15 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
     @ManyToOne
     @JoinColumn(name = "dealer_id")
     private DealerEntity dealer;
-
     @ManyToOne
     @JoinColumn(name = "car_id")
     private CarEntity car;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<ServiceEntity> service;
 
     public OrderEntity() {
     }
@@ -103,4 +102,5 @@ public class OrderEntity {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
 }

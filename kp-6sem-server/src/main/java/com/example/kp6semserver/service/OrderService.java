@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -77,14 +74,14 @@ public class OrderService {
 
     public void deleteOrder(Long id) { orderRepo.deleteById(id);}
 
-    public ArrayList<OrderModel> getOrdersByUser(Long ID) {
+    public ArrayList<OrderEntity> getOrdersByUser(Long ID) {
         Optional<UserEntity> user = userRepo.findById(ID);
 
-        ArrayList<OrderModel> resArr = new ArrayList<OrderModel>();
-        ArrayList<OrderModel> allOrders = OrderModel.toModel(orderRepo.findAll());
+        ArrayList<OrderEntity> resArr = new ArrayList<OrderEntity>();
+        ArrayList<OrderEntity> allOrders = (ArrayList<OrderEntity>) orderRepo.findAll();
 
-        for(OrderModel model : allOrders) {
-            if(model.getUserID().equals(user.get().getId())) resArr.add(model);
+        for(OrderEntity entity : allOrders) {
+            if(entity.getUser().getId().equals(user.get().getId())) resArr.add(entity);
         }
         return resArr;
     }

@@ -15,9 +15,8 @@ public class CarModel {
     private String fuel;
     private String gearbox;
     private String tariff;
-    private String dealer;
+    private String dealer_name;
     private String isAvailable;
-
 
     public static CarModel toModelOne(CarEntity entity) {
         CarModel model = new CarModel();
@@ -27,8 +26,9 @@ public class CarModel {
         model.setEngineCapacity(entity.getEngineCapacity());
         model.setPlateNumber(entity.getPlateNumber());
         model.setTariff(entity.getTariff());
-        model.setDealer(entity.getDealer().getName());
+        model.setDealer_name(entity.getDealer().getName());
         model.setFuel(entity.getFuel());
+        model.setGearbox(entity.getGearbox());
         model.setGearbox(entity.getGearbox());
         model.setIsAvailable(entity.getIsAvailable());
 
@@ -96,12 +96,12 @@ public class CarModel {
         this.tariff = tariff;
     }
 
-    public String getDealer() {
-        return dealer;
+    public String getDealer_name() {
+        return dealer_name;
     }
 
-    public void setDealer(String dealer) {
-        this.dealer = dealer;
+    public void setDealer_name(String dealer_name) {
+        this.dealer_name = dealer_name;
     }
 
     public String getFuel() {
@@ -127,4 +127,12 @@ public class CarModel {
     public void setIsAvailable(String isAvailable) {
         this.isAvailable = isAvailable;
     }
+
+//    public String getDealerID() {
+//        return dealerID;
+//    }
+//
+//    public void setDealerID(String dealerID) {
+//        this.dealerID = dealerID;
+//    }
 }

@@ -17,8 +17,7 @@ public class CarUpdateController {
 
     @PatchMapping ("/{id}")
     CarEntity updateCar(@RequestBody CarEntity car) throws ObjDoesNotExist {
-        return null;
-//        return carService.update(car);
+        return carService.update(car);
     }
 
 }

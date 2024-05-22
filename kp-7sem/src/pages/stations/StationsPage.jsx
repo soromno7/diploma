@@ -12,6 +12,7 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
+import CellBtnDelete from "../../components/cells/CellBtnDelete";
 
 function StationsPage() {
   const [rows, setRows] = useState([]);
@@ -20,30 +21,24 @@ function StationsPage() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [dealer, setDealer] = useState();
   const [city, setCity] = useState();
   const [street, setStreet] = useState();
-  const [street_number, setStreetNumber] = useState();
+  const [building, setBuilding] = useState();
 
   const [updateTable, setUpdateTable] = useState(() => {});
   const [selRow, setSelRow] = useState();
-
-  const [dealers, setDealers] = useState([]);
 
   const createHandler = async () => {
     const station = {
       city,
       street,
-      street_number
+      building,
     };
 
-    console.log(city)
+    console.log(city);
 
     await axios
-      .post(`http://localhost:8080/service/add/${dealer}`, station)
-      .then((res) => {
-        console.log(res);
-      })
+      .post(`http://localhost:8080/station/create`, station)
       .then(() => updateTable())
       .then(() => handleClose())
       .catch((err) => {
@@ -51,28 +46,24 @@ function StationsPage() {
       });
   };
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (stationID) => {
     await axios
-      .delete(`http://localhost:8080/service/delete/${selRow.id}`)
+      .delete(`http://localhost:8080/station/delete/${stationID}`)
       .then(() => updateTable());
   };
 
-  const loadDealers = async () => {
-    await axios
-      .get("http://localhost:8080/dealer/get-all")
-      .then((res) => setDealers(res.data));
-  };
-
-  useEffect(() => {
-    loadDealers();
-  }, []);
-
   const cols = [
     { field: "id", headerName: "ID" },
-    { field: "dealer", headerName: "Дилер" },
     { field: "city", headerName: "Город" },
     { field: "street", headerName: "Улица" },
-    { field: "street_number", headerName: "Номер здания" },
+    { field: "building", headerName: "Номер здания" },
+    {
+      field: "",
+      headerName: "Действие",
+      editable: false,
+      cellRenderer: CellBtnDelete,
+      cellRendererParams: { deleteHandler },
+    },
   ];
 
   const style = {
@@ -105,21 +96,6 @@ function StationsPage() {
           </Typography>
           <Typography id="descr" sx={{ mt: 4 }} component={"span"}>
             <div className="modal-container">
-              <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="dealer-label">Дилер</InputLabel>
-                <Select
-                  labelId="dealer-label"
-                  id="dealer-label"
-                  value={dealer}
-                  onChange={(e) => setDealer(e.target.value)}
-                >
-                  {dealers.map((el) => (
-                    <MenuItem value={el.id} key={`${el.name} + ${el.id}`}>
-                      {el.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
               <TextField
                 id="filled-basic"
                 label="Город"
@@ -159,7 +135,7 @@ function StationsPage() {
                   variant="filled"
                   style={{ backgroundColor: "white", borderRadius: "4px" }}
                   onChange={(val) => {
-                    setStreetNumber(val.target.value);
+                    setBuilding(val.target.value);
                   }}
                   sx={{
                     width: 165,
@@ -187,20 +163,12 @@ function StationsPage() {
         >
           Добавить
         </Button>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "white", color: "black" }}
-          size="small"
-          onClick={deleteHandler}
-        >
-          Удалить
-        </Button>
       </div>
       <Table
         cols={cols}
         rows={rows}
         setRows={setRows}
-        URL={"http://localhost:8080/service/get-all"}
+        URL={"http://localhost:8080/station/get-all"}
         setUpdateTable={setUpdateTable}
         setSelectedRow={setSelRow}
         selRow={selRow}

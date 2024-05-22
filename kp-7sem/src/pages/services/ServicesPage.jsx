@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import Table from "../../components/Table";
-import {
-  Button,
-} from "@mui/material";
 import axios from "axios";
+import CellBtnDelete from "../../components/cells/CellBtnDelete";
 
-function MaintenancesPage() {
+function ServicesPage() {
   const [rows, setRows] = useState([]);
 
   const [updateTable, setUpdateTable] = useState(() => {});
@@ -13,19 +11,23 @@ function MaintenancesPage() {
 
   const deleteHandler = async () => {
     await axios
-      .delete(`http://localhost:8080/maintenance/delete/${selRow.id}`)
+      .delete(`http://localhost:8080/service/delete/${selRow.id}`)
       .then(() => updateTable());
   };
 
   const cols = [
     { field: "id", headerName: "ID" },
-    { field: "userID", headerName: "ID пользователя" },
-    { field: "firstName", headerName: "Имя" },
-    { field: "lastName", headerName: "Фамилия" },
+    { field: "user.id", headerName: "ID пользователя" },
     { field: "address", headerName: "Адрес" },
     { field: "date", headerName: "Дата" },
-    { field: "carID", headerName: "ID автомобиля" },
-    { field: "carName", headerName: "Автомобиль" },
+    { field: "order.id", headerName: "ID заказа" },
+    {
+      field: "",
+      headerName: "Действие",
+      editable: false,
+      cellRenderer: CellBtnDelete,
+      cellRendererParams: { deleteHandler },
+    },
   ];
 
   const style = {
@@ -41,21 +43,11 @@ function MaintenancesPage() {
 
   return (
     <div>
-      <div className="btnContainer">
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "white", color: "black" }}
-          size="small"
-          onClick={deleteHandler}
-        >
-          Удалить
-        </Button>
-      </div>
       <Table
         cols={cols}
         rows={rows}
         setRows={setRows}
-        URL={"http://localhost:8080/maintenance/get-all"}
+        URL={"http://localhost:8080/service/get-all"}
         setUpdateTable={setUpdateTable}
         setSelectedRow={setSelRow}
         selRow={selRow}
@@ -65,4 +57,4 @@ function MaintenancesPage() {
   );
 }
 
-export default MaintenancesPage;
+export default ServicesPage;

@@ -78,8 +78,6 @@ function RentPage() {
       duration,
     };
 
-    console.log(duration)
-
     await axios.post(
       `http://localhost:8080/order/create/${id}/${selectedCar.id}`,
       order
